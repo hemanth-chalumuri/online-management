@@ -17,10 +17,10 @@
                         <a href="${contextRoot}/about">About</a>
                     </li>
                     <li id="viewdetails">
-                        <a href="${contextRoot}/viewdetails">View Details</a>
+                        <a href="${contextRoot}/viewproducts">View Product Details</a>
                     </li>
                     <li id="adddetails">
-                        <a href="${contextRoot}/adddetails">Add Details</a>
+                        <a href="${contextRoot}/addproducts">Add Product Details</a>
                     </li>
                 </ul>
             </div>
