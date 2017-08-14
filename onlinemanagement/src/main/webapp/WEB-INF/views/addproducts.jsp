@@ -5,6 +5,7 @@
 	<form:form action="${contextRoot}/saveproducts" method="post" modelAttribute="productz">
 		<table>
 			<tr>
+				<form:hidden path="id"/>
 				<td>Product Name:</td>
 				<td><form:input path="name" /></td>
 			</tr>
