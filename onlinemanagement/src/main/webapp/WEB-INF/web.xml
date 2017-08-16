@@ -9,6 +9,12 @@
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- FOr throwing exception -->
+		<init-param>
+			<!-- This will throw the 404 Error if the url is not found and will be caught by our custom GlobalDefaultExceptionHandler  -->
+			<param-name>throwExceptionIfNoHandlerFound</param-name>
+			<param-value>true</param-value>
+		</init-param>
 	</servlet>
 
 	<servlet-mapping>

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.hemanth.onlinemanagement.dao.ProductDAO;
 import net.hemanth.onlinemanagement.dto.Product;
+import net.hemanth.onlinemanagement.exception.ProductException;
 
 @Controller
 public class PageController {
@@ -45,15 +46,18 @@ public class PageController {
 	}
 
 	@RequestMapping(value = {"/addproducts", "/addproducts/{id}"})
-	public ModelAndView addProducts(@PathVariable Optional<Integer> id) {
+	public ModelAndView addProducts(@PathVariable Optional<Integer> id) throws ProductException{
 		ModelAndView mv = new ModelAndView("page");
 		mv.addObject("title", "Add Products");
 		mv.addObject("userClickAddProducts", true);
 		if (!id.isPresent()) {
 			mv.addObject("productz", new Product());
 		} else {
-			System.out.println(id);
 			Integer i=id.get();
+			/* when viewing products and clicking edit , the url will contain that id, if we modify that id in url , http://localhost:9091/onlinemanagement/addproducts/11
+			if its not there in db null will be returned and custom exception page is displayed*/  
+			if(productDao.getProductByid(i)==null)
+				throw new ProductException();
 			mv.addObject("productz", productDao.getProductByid(i));
 		}
 		return mv;

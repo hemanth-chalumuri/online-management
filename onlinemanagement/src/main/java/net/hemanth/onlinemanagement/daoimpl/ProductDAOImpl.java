@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.hibernate.Query;
 import net.hemanth.onlinemanagement.dao.ProductDAO;
 import net.hemanth.onlinemanagement.dto.Product;
 
@@ -35,10 +35,13 @@ public class ProductDAOImpl implements ProductDAO {
 
 	@Override
 	public Product getProductByid(Integer id) {
-		Product p = (Product) sessionFactory.getCurrentSession().createQuery("from Product where id=:id")
-				.setInteger("id", new Integer(id)).list().get(0);
-		System.out.println("sent->" + id + "     got ->" + p.getId());
-		return p;
+		
+				List<Product> ProductList=sessionFactory.getCurrentSession().createQuery("from Product where id=:id")
+				.setInteger("id", new Integer(id)).list();
+				if(ProductList!=null && !ProductList.isEmpty()) {
+					return (Product)ProductList.get(0);
+				}
+		return null;
 	}
 
 	@Override
