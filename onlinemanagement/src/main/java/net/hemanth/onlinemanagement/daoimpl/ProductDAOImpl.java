@@ -20,28 +20,30 @@ public class ProductDAOImpl implements ProductDAO {
 	@Override
 	public List<Product> getProducts() {
 		return sessionFactory.getCurrentSession().createQuery("from Product").list();
-		/*String selectActiveCategory = "FROM Product";
-
-		Query query = sessionFactory.getCurrentSession().createQuery(selectActiveCategory);
-		return query.getResultList();*/
 	}
 
 	@Override
-	public void saveProduct(Product p) {
-		sessionFactory.getCurrentSession().saveOrUpdate(p);
+	public boolean saveProduct(Product p) {
+		try {
+			sessionFactory.getCurrentSession().saveOrUpdate(p);
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public Product getProductByid(Integer id) {
-	 Product p=(Product)sessionFactory.getCurrentSession().createQuery("from Product where id=:id")
-			 .setInteger("id",new Integer(id)).list().get(0);
-	 System.out.println("sent->"+id+"     got ->"+p.getId());
+		Product p = (Product) sessionFactory.getCurrentSession().createQuery("from Product where id=:id")
+				.setInteger("id", new Integer(id)).list().get(0);
+		System.out.println("sent->" + id + "     got ->" + p.getId());
 		return p;
 	}
 
 	@Override
 	public void deleteProductByid(Integer id) {
-		Product p=getProductByid(id);
+		Product p = getProductByid(id);
 		sessionFactory.getCurrentSession().delete(p);
 	}
 }

@@ -8,6 +8,6 @@ public interface ProductDAO {
 
 	List<Product> getProducts();
 	Product getProductByid(Integer id);
-	void saveProduct(Product p);
+	boolean saveProduct(Product p);
 	void deleteProductByid(Integer id);
 }
