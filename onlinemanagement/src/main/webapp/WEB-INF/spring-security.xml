@@ -9,19 +9,27 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
-
+<!-- add this to resolve the dataSource error  -->
+	<context:component-scan base-package="net.hemanth.onlinemanagement" />
 
 	<http>
-		<intercept-url pattern="/**" access="hasRole('USER')" />
+		<intercept-url pattern="/**" access="hasAuthority('USER')" />
+		<intercept-url pattern="/**" access="hasAuthority('ADMIN')" />
 		<form-login />
 		<logout />
 	</http>
 
 	<authentication-manager>
 		<authentication-provider>
-			<user-service>
-				<user name="hemanth" password="password" authorities="ROLE_USER, ROLE_ADMIN" />
-			</user-service>
+			<!-- <user-service> <user name="hemanth" password="password" authorities="ROLE_USER, 
+				ROLE_ADMIN" /> </user-service> -->
+
+			<!-- using JDBC user-service instead of inbuilt user-service . users-by takes 3rd parameter as enabled -->
+
+			<jdbc-user-service data-source-ref="dataSource"
+				authorities-by-username-query="select username,role from user_detail where username = ?"
+				users-by-username-query="select username,password,1 from user_detail where username = ?" />
+
 		</authentication-provider>
 	</authentication-manager>
 
