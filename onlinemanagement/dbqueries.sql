@@ -14,5 +14,6 @@ CREATE TABLE user_detail (
 	PRIMARY KEY (id )
 );
 
-INSERT INTO user_detail (username,role,password) VALUES ('admin','ADMIN','password');
-INSERT INTO user_detail (username,role,password) VALUES ('hemanth','USER','password');
+-- used Bcrypt Hash as password.
+INSERT INTO user_detail (username,role,password) VALUES ('admin','ADMIN','$2a$06$FTv7qeF6qQ2WLimkgQpsw.4DZm7t6rVOuitvML17MJFXmqS20IB9W');
+INSERT INTO user_detail (username,role,password) VALUES ('hemanth','USER','$2a$06$FTv7qeF6qQ2WLimkgQpsw.4DZm7t6rVOuitvML17MJFXmqS20IB9W');

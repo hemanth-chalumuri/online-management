@@ -12,20 +12,32 @@
 <!-- add this to resolve the dataSource error  -->
 	<context:component-scan base-package="net.hemanth.onlinemanagement" />
 
+<!-- BCRYPT Password Encoder bean used below at authentication manager -->
+<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+<!-- here restricted  -->
 	<http>
-		<intercept-url pattern="/**" access="hasAuthority('USER')" />
-		<intercept-url pattern="/**" access="hasAuthority('ADMIN')" />
+		<intercept-url pattern="/addproducts/**" access="hasAuthority('ADMIN')" />
+		<intercept-url pattern="/deleteproduct/**" access="hasAuthority('ADMIN')" />
+		<intercept-url pattern="/about" access="permitAll" />
+		<intercept-url pattern="/viewproducts" access="permitAll" />
+		<intercept-url pattern="/" access="hasAuthority('USER')" />
+		<intercept-url pattern="/" access="hasAuthority('ADMIN')" />
+		
 		<form-login />
+		<access-denied-handler error-page="/access-denied"/>
 		<logout />
 	</http>
 
 	<authentication-manager>
 		<authentication-provider>
+		
+			<password-encoder ref="passwordEncoder" />	
+		
 			<!-- <user-service> <user name="hemanth" password="password" authorities="ROLE_USER, 
 				ROLE_ADMIN" /> </user-service> -->
 
 			<!-- using JDBC user-service instead of inbuilt user-service . users-by takes 3rd parameter as enabled -->
-
 			<jdbc-user-service data-source-ref="dataSource"
 				authorities-by-username-query="select username,role from user_detail where username = ?"
 				users-by-username-query="select username,password,1 from user_detail where username = ?" />
