@@ -3,6 +3,7 @@ package net.hemanth.onlinemanagement.controller;
 import java.util.Optional;
 
 import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import net.hemanth.onlinemanagement.dao.ProductDAO;
 import net.hemanth.onlinemanagement.dto.Product;
 import net.hemanth.onlinemanagement.exception.ProductException;
+import net.hemanth.onlinemanagement.validator.ProductValidator;
 
 @Controller
 public class PageController {
@@ -27,6 +29,9 @@ public class PageController {
 	@Autowired
 	private ProductDAO productDao;
 
+	@Autowired
+	ProductValidator productValidator;
+	
 	@RequestMapping(value = { "/", "home", "index" })
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("page");
@@ -78,6 +83,10 @@ public class PageController {
 	@RequestMapping(value = "/saveproducts", method = RequestMethod.POST)
 	public String saveProducts(@Valid @ModelAttribute("productz") Product p, BindingResult br,Model m) {
 		
+		//for spring custom validator
+		productValidator.validate(p, br);
+
+		//for hibernate validator
 		if(br.hasErrors()) {
 			// if errors are there display the same page
 			m.addAttribute("title", "Add Products");
