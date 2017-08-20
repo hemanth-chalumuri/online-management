@@ -27,6 +27,7 @@ public class Product {
 	@Column(name = "product_description")
 	@NotBlank(message="Please enter Description")
 	@Length(max=30,message="Product Description should not exceed 30 characters")
+	// @JsonIgnore This annotation will ignore this field in JSON Response while making REST call
 	private String description;
 
 	public int getId() {
