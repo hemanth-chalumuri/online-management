@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Product {
 
@@ -15,9 +18,15 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_id")
 	private int id;
+	
 	@Column(name = "product_name")
+	@NotBlank(message="Please enter product Name")
+	@Length(min=2,message="Product Name should be atleast 2 characters")
 	private String name;
+	
 	@Column(name = "product_description")
+	@NotBlank(message="Please enter Description")
+	@Length(max=30,message="Product Description should not exceed 30 characters")
 	private String description;
 
 	public int getId() {

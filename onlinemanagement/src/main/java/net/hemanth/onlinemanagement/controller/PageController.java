@@ -2,10 +2,12 @@ package net.hemanth.onlinemanagement.controller;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +56,7 @@ public class PageController {
 			mv.addObject("productz", new Product());
 		} else {
 			Integer i=id.get();
+			mv.addObject("edit",true);
 			/* when viewing products and clicking edit , the url will contain that id, if we modify that id in url , http://localhost:9091/onlinemanagement/addproducts/11
 			if its not there in db null will be returned and custom exception page is displayed*/  
 			if(productDao.getProductByid(i)==null)
@@ -73,13 +76,22 @@ public class PageController {
 	}
 
 	@RequestMapping(value = "/saveproducts", method = RequestMethod.POST)
-	public ModelAndView saveProducts(@ModelAttribute("productz") Product p, BindingResult br) {
-		ModelAndView mv = new ModelAndView("page");
-		mv.addObject("title", "View Products");
+	public String saveProducts(@Valid @ModelAttribute("productz") Product p, BindingResult br,Model m) {
+		
+		if(br.hasErrors()) {
+			// if errors are there display the same page
+			m.addAttribute("title", "Add Products");
+			m.addAttribute("userClickAddProducts", true);
+			return "page";
+		}
+
+		// save the product data 
 		productDao.saveProduct(p);
-		mv.addObject("userClickViewProducts", true);
-		mv.addObject("products", productDao.getProducts());
-		return mv;
+		
+		// if no error display the view products page
+		m.addAttribute("title", "View Products");
+		m.addAttribute("userClickViewProducts", true);
+		return "redirect:/viewproducts";
 	}
 	
 	@RequestMapping(value = "/deleteproduct/{id}")
