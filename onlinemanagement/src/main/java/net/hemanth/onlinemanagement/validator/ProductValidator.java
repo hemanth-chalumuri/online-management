@@ -18,7 +18,7 @@ public class ProductValidator implements Validator {
 		// for custom business validation
 		Product product = (Product) target;
 		if(product.getName().length()>=10) {
-			errors.rejectValue("name", null, "product.name.max.length.invalid");
+			errors.rejectValue("name","product.name.max.length.invalid");
 			return;
 		}
 	}
